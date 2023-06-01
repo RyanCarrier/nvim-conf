@@ -13,10 +13,35 @@ return {
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
 
+  "RRethy/vim-illuminate",
+  "danilamihailov/beacon.nvim",
+  {
+    'simrat39/rust-tools.nvim',
+    config = function()
+      local rt = require("rust-tools")
+      rt.setup({
+        server = {
+          on_attach = function(_, bufnr)
+            vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+            -- Code action groups
+            vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+          end
+        }
+      })
+    end
+  },
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = {
+      --     'hrsh7th/cmp-nvim-lua',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
+      'hrsh7th/cmp-vsnip',
+      'hrsh7th/cmp-path',
+      --     'hrsh7th/cmp-buffer',
+      'hrsh7th/vim-vsnip',
+
+
       -- Snippet Engine & its associated nvim-cmp source
       'L3MON4D3/LuaSnip',
       'saadparwaiz1/cmp_luasnip',
@@ -45,6 +70,16 @@ return {
         section_separators = '',
       },
     },
+  },
+  {
+    'folke/trouble.nvim',
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {},
+  },
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {},
   },
 
   {
