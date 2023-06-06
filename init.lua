@@ -44,7 +44,7 @@ vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { des
 
 vim.keymap.set('n', '<leader>pg', require('telescope.builtin').git_files, { desc = '[P]roject [G]it files' })
 vim.keymap.set('n', '<leader>pf', require('telescope.builtin').find_files, { desc = '[P]rojcet [F]iles' })
-vim.keymap.set('n', '<C-P>', require('telescope.builtin').git_files,
+vim.keymap.set('n', '<C-p>', require('telescope.builtin').git_files,
   { desc = "idk this is from vscode and I'm use to it" })
 
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })

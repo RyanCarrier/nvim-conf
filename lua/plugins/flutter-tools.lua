@@ -8,5 +8,6 @@ return {
     },
     config = function()
         require("telescope").load_extension("flutter")
+        require("flutter-tools").setup({})
     end
 }
