@@ -15,11 +15,25 @@ return {
           colors.bg = colors.black
           colors.border = colors.purple
           colors.border_highlight = colors.purple
+          -- colors.bg_search = colors.orange
+
+          --colors.bg_float = colors.red
+          --side bar is the section down bottom which 'which' plugin uses
+          --         colors.bg_sidebar = colors.green
+          -- colors.bg_popup = colors.teal
         end,
 
-        on_highlights = function(hl, colors)
+
+        on_highlights = function(hl, c)
           hl.ColorColumn = { bg = "#202122" }
-        end
+          c.bg_float = c.red
+        end,
+        styles = {
+          sidebars = "dark",
+          floats = "dark",
+        },
+        sidebars = { "qf", "help" },
+
         --         hl.ctermbg = {
         --           fg = colors.green,
         --           bg = colors.cyan,

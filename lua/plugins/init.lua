@@ -1,4 +1,5 @@
 return {
+  "nvim-tree/nvim-web-devicons", -- optional dependency
 
   -- NOTE: First, some plugins that don't require any configuration
 
@@ -15,6 +16,49 @@ return {
 
   "RRethy/vim-illuminate",
   "danilamihailov/beacon.nvim",
+  {
+    'petertriho/nvim-scrollbar',
+    config = function()
+      require('scrollbar').setup()
+    end
+  },
+
+  {
+    "utilyre/barbecue.nvim",
+    name = "barbecue",
+    version = "*",
+    dependencies = {
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons", -- optional dependency
+    },
+    opts = {
+      -- configurations go here
+    },
+    config = function()
+      -- triggers CursorHold event faster
+      vim.opt.updatetime = 200
+
+      require("barbecue").setup({
+        create_autocmd = false, -- prevent barbecue from updating itself automatically
+        them = 'tokyonight',
+      })
+
+      vim.api.nvim_create_autocmd({
+        "WinResized", -- or WinResized on NVIM-v0.9 and higher
+        "BufWinEnter",
+        "CursorHold",
+        "InsertLeave",
+
+        -- include this if you have set `show_modified` to `true`
+        "BufModifiedSet",
+      }, {
+        group = vim.api.nvim_create_augroup("barbecue.updater", {}),
+        callback = function()
+          require("barbecue.ui").update()
+        end,
+      })
+    end
+  },
   {
     'simrat39/rust-tools.nvim',
     config = function()
@@ -58,18 +102,25 @@ return {
   { 'folke/which-key.nvim',  opts = {} },
 
 
+
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
     opts = {
       options = {
-        icons_enabled = false,
+        -- icons_enabled = false,
         theme = 'tokyonight', -- -night', --'onedark',
-        component_separators = '|',
-        section_separators = '',
+        -- theme = 'material', --'tokyonight', -- -night', --'onedark',
+        --component_separators = '|',
+        --section_separators = '',
+
       },
     },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('lualine').setup({})
+    end
   },
   {
     'folke/trouble.nvim',
