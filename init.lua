@@ -23,11 +23,14 @@ require('telescope').setup {
     },
   },
 }
+--require('telescope').load_extension("fzf")
+--require("telescope").load_extension("flutter")
+-- require("telescope").load_extension("file_browser")
 
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
-
+vim.keymap.set("n", "<leader>fl", function() require("telescope").extensions.flutter.commands() end)
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
@@ -157,6 +160,7 @@ local on_attach = function(_, bufnr)
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+  -- nmap('gds', ':vsplit<CR<Cmd>lua vim.lsp.buf.definition()<CR>', '[G]oto [D]efinition with a [S]plit')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
@@ -227,6 +231,21 @@ mason_lspconfig.setup_handlers {
     }
   end,
 }
+require('flutter-tools').setup({
+  lsp = {
+    on_attach = on_attach,
+    color = {
+      enabled = true,
+      virtual_text = true,
+      virtual_text_str = "■",
+    }
+  }
+})
+require('rust-tools').setup({
+  server = {
+    on_attach = on_attach,
+  },
+})
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
@@ -303,3 +322,23 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
 vim.diagnostic.config {
   float = { border = _border }
 }
+
+-- Lua -- TROUBLE
+vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>",
+  { silent = true, noremap = true }
+)
+vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>",
+  { silent = true, noremap = true }
+)
+vim.keymap.set("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>",
+  { silent = true, noremap = true }
+)
+vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>",
+  { silent = true, noremap = true }
+)
+vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>",
+  { silent = true, noremap = true }
+)
+vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>",
+  { silent = true, noremap = true }
+)
