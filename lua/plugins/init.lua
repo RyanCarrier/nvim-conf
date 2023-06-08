@@ -22,6 +22,10 @@ return {
       require('scrollbar').setup()
     end
   },
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+  },
 
   {
     "utilyre/barbecue.nvim",

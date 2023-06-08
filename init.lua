@@ -25,12 +25,14 @@ require('telescope').setup {
 }
 --require('telescope').load_extension("fzf")
 --require("telescope").load_extension("flutter")
--- require("telescope").load_extension("file_browser")
+require("telescope").load_extension("file_browser")
+vim.api.nvim_set_keymap("n", "<space>fb", ":Telescope file_browser", { noremap = true })
 
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
-vim.keymap.set("n", "<leader>fl", function() require("telescope").extensions.flutter.commands() end)
+vim.keymap.set("n", "<leader>fl", function() require("telescope").extensions.flutter.commands() end,
+  { desc = "[Fl]utter" })
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
@@ -48,7 +50,7 @@ vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { des
 vim.keymap.set('n', '<leader>pg', require('telescope.builtin').git_files, { desc = '[P]roject [G]it files' })
 vim.keymap.set('n', '<leader>pf', require('telescope.builtin').find_files, { desc = '[P]rojcet [F]iles' })
 vim.keymap.set('n', '<C-p>', require('telescope.builtin').git_files,
-  { desc = "idk this is from vscode and I'm use to it" })
+  { desc = "[P]ersonal preference - idk this is from vscode and I'm use to it" })
 
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
@@ -166,12 +168,13 @@ local on_attach = function(_, bufnr)
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-  nmap('<leader>f', vim.lsp.buf.format, '[F]ormat')
+  nmap('<leader>ff', vim.lsp.buf.format, '[FF]ormat')
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
   -- REMOVED to allow for j and k
-  -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+  -- I don't think this does need to be removed
+  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -247,12 +250,58 @@ require('rust-tools').setup({
   },
 })
 
+local wk = require("which-key")
+local chatgpt = require("chatgpt")
+wk.register({
+  a = {
+    name = "ChatGPT",
+    i = {
+      function()
+        chatgpt.edit_with_instructions()
+      end,
+      "Edit with instructions",
+    },
+  },
+}, {
+  prefix = "<leader>",
+  mode = "v",
+})
+
+wk.register({
+  a = {
+    name = "ChatGPT",
+    i = {
+      function()
+        chatgpt.openChat()
+      end,
+      "Chat with [AI]",
+    },
+  },
+}, {
+  prefix = "<leader>",
+  mode = "n",
+})
+
+wk.register({
+  a = {
+    name = "ChatGPT",
+    p = {
+      function()
+        chatgpt.selectAwesomePrompt()
+      end,
+      "Chat with [A]I [P]rompt",
+    },
+  },
+}, {
+  prefix = "<leader>",
+  mode = "n",
+})
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
 local cmp = require('cmp')
 local luasnip = require('luasnip')
-require('luasnip.loaders.from_vscode').lazy_load()
-luasnip.config.setup {}
+-- require('luasnip.loaders.from_vscode').lazy_load()
+luasnip.config.setup({})
 
 cmp.setup {
   snippet = {
@@ -322,6 +371,7 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
 vim.diagnostic.config {
   float = { border = _border }
 }
+-- TS file_browser
 
 -- Lua -- TROUBLE
 vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>",

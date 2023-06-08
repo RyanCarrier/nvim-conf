@@ -3,7 +3,15 @@ return {
     event = "VeryLazy",
     config = function()
         require("chatgpt").setup({
-            api_key_cmd = "cat ~/.chatgpt.api.key"
+            api_key_cmd = "cat ~/.chatgpt.api.key",
+            -- chat = {
+            --     keymaps = {
+            --         submit = { "<C-m>", "<C-Enter>", "<C-t>" },
+            --     }
+            -- }
+            popup_input = {
+                submit = "<c-m>",
+            }
         })
     end,
     dependencies = {
