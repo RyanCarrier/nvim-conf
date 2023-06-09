@@ -11,6 +11,15 @@ return {
             -- }
             popup_input = {
                 submit = "<c-m>",
+            },
+            chat = {
+                keymaps = {
+                    close = "<Esc>",
+                }
+            },
+            openai_params = {
+                max_tokens = 1000,
+
             }
         })
     end,

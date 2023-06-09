@@ -9,24 +9,34 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
   group = highlight_group,
   pattern = '*',
+
 })
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
+local actions = require('telescope.actions')
 require('telescope').setup {
   defaults = {
     mappings = {
       i = {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
+        ['<C-j>'] = actions.move_selection_next,
+        ['<C-k>'] = actions.move_selection_previous,
       },
+      -- n = {},
     },
   },
 }
 --require('telescope').load_extension("fzf")
 --require("telescope").load_extension("flutter")
 require("telescope").load_extension("file_browser")
-vim.api.nvim_set_keymap("n", "<space>fb", ":Telescope file_browser", { noremap = true })
+vim.keymap.set('n', "<leader>fb", function()
+  require("telescope").extensions.file_browser.file_browser({
+    hidden = true,
+    cwd = vim.fn.expand('%:p:h'),
+  })
+end, { desc = "[F]ile [B]rowser" })
 
 
 -- Enable telescope fzf native, if installed
@@ -39,8 +49,8 @@ vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { d
 vim.keymap.set('n', '<leader>/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    winblend = 10,
-    previewer = false,
+    -- winblend = 10,
+    -- previewer = false,
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
@@ -58,6 +68,7 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>tk', require('telescope.builtin').keymaps, { desc = '[T]elescope [K]eymaps' })
 
+
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
@@ -65,7 +76,7 @@ require('nvim-treesitter.configs').setup {
   ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim', 'bash', 'dart',
     'zig', 'toml', 'yaml', 'gomod' },
 
-  -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
+  -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself! )
   auto_install = true,
 
   highlight = { enable = true },
@@ -344,6 +355,10 @@ cmp.setup {
       end
     end, { 'i', 's' }),
   },
+
+
+
+
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
@@ -372,6 +387,7 @@ vim.diagnostic.config {
   float = { border = _border }
 }
 -- TS file_browser
+vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { noremap = true, silent = true })
 
 -- Lua -- TROUBLE
 vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>",

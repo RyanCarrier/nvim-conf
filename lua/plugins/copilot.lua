@@ -1,5 +1,6 @@
 return
 {
+    -- zbirenbaum copilot-cmp is very cool
     "zbirenbaum/copilot.lua",
     event = "InsertEnter",
     opts = {
@@ -7,14 +8,15 @@ return
             auto_trigger = true,
 
             keymap = {
-                accept = "<C-Enter>",
+                accept = "<M-j>",
                 accept_line = "<C-l>",
-                accept_word = "<M-k>",
+                --  accept_word = "<M-k>",
                 next = "<C-]>",
                 prev = "<C-[>",
-                dismiss = "<M-c>",
+                dismiss = { "<M-h>", "M-c" },
             },
         },
     },
+
 
 }

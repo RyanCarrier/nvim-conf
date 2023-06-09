@@ -7,8 +7,12 @@ return {
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
 
+
+
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
+
+  'mbbill/undotree',
 
   'machakann/vim-sandwich',
   -- NOTE: This is where your plugins related to LSP can be installed.
@@ -103,7 +107,7 @@ return {
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',  opts = {} },
+  { 'folke/which-key.nvim', opts = {} },
 
 
 
@@ -149,7 +153,19 @@ return {
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
+  {
+    'numToStr/Comment.nvim',
+    opts = {
+      -- config = function()
+      --   require('Comment').setup({
+      --     toggler = {
+      --     this didn't work lol
+      --       line = { "<leader>/", "gcc" },
+      --     }
+      --   })
+      -- end
+    }
+  },
 
   {
     -- Highlight, edit, and navigate code
