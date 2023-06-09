@@ -13,7 +13,7 @@ return
                 --  accept_word = "<M-k>",
                 next = "<C-]>",
                 prev = "<C-[>",
-                dismiss = { "<M-h>", "M-c" },
+                dismiss = "<M-h>",
             },
         },
     },

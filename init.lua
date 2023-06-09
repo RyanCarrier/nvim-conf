@@ -174,7 +174,17 @@ local on_attach = function(_, bufnr)
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   -- nmap('gds', ':vsplit<CR<Cmd>lua vim.lsp.buf.definition()<CR>', '[G]oto [D]efinition with a [S]plit')
-  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+  nmap('gr', function()
+    require('telescope.builtin').lsp_references({
+      include_decleration = false,
+    })
+  end, '[G]oto [R]eferences')
+  -- ignore this attempt to try get to the only reference that is not it's definition
+  -- nmap('<leader>gR', "<cmd>lua vim.lsp.buf.references()<cr><cr>", '[G]oto [R]eferences')
+  -- nmap('<leader>gR', function()
+  --   vim.lsp.buf.references()
+  --   vim.cmd('normal! zz')
+  -- end, '[G]oto [R]eferences')
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
@@ -408,3 +418,7 @@ vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>",
 vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>",
   { silent = true, noremap = true }
 )
+-- vim.api.nvim_set_keymap('i', "<C-BS>", "<C-o>db", { noremap = true })
+-- vim.api.nvim_set_keymap('i', "<C-Del>", "<C-o>dw", { noremap = true })
+-- ctrl backspace to delete word
+vim.api.nvim_set_keymap('i', "<C-H>", "<C-W>", { noremap = true })
