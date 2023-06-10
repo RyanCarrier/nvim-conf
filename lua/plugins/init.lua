@@ -1,25 +1,29 @@
 return {
+  "ThePrimeagen/vim-be-good",
   "nvim-tree/nvim-web-devicons", -- optional dependency
-
-  -- NOTE: First, some plugins that don't require any configuration
-
   -- Git related plugins
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
-
-
+  'mg979/vim-visual-multi',
 
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
+  --undo list
   'mbbill/undotree',
-
   'machakann/vim-sandwich',
-  -- NOTE: This is where your plugins related to LSP can be installed.
-  --  The configuration is done below. Search for lspconfig to find it below.
 
+  {
+    'b0o/incline.nvim',
+    config = function()
+      require('incline').setup()
+    end
+  },
+
+  --highlight hovered
   "RRethy/vim-illuminate",
   "danilamihailov/beacon.nvim",
+  "eandrju/cellular-automaton.nvim",
   {
     'petertriho/nvim-scrollbar',
     config = function()
@@ -181,5 +185,4 @@ return {
       require("nvim-autopairs").setup({})
     end
   }
-
 }

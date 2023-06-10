@@ -422,3 +422,23 @@ vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>",
 -- vim.api.nvim_set_keymap('i', "<C-Del>", "<C-o>dw", { noremap = true })
 -- ctrl backspace to delete word
 vim.api.nvim_set_keymap('i', "<C-H>", "<C-W>", { noremap = true })
+
+vim.keymap.set("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>", { desc = "Make it rain" })
+
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+
+vim.keymap.set("x", "<leader>p", [["_dP"]])
+
+
+-- need to learn about cnext and lnext
+-- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
+-- vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
+-- vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
+-- vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+--
+-- this might be cool
+vim.keymap.set("n", "<left>", "<C-w>h")
+vim.keymap.set("n", "<down>", "<C-w>j")
+vim.keymap.set("n", "<up>", "<C-w>k")
+vim.keymap.set("n", "<right>", "<C-w>l")
