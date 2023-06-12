@@ -80,7 +80,7 @@ require('nvim-treesitter.configs').setup {
   auto_install = true,
 
   highlight = { enable = true },
-  indent = { enable = true, disable = { 'python' } },
+  indent = { enable = true, disable = { 'python', 'dart' } },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -171,6 +171,24 @@ local on_attach = function(_, bufnr)
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+  nmap('<leader>ww', function()
+    vim.lsp.buf.code_action({
+      apply = true,
+      filter = function(action)
+        return string.find(action.title, 'Wrap with widget')
+      end
+
+    })
+  end, '[W]rap [W]idget')
+  nmap('<leader>fq', function()
+    vim.lsp.buf.code_action({
+      apply = true,
+      filter = function(action)
+        return string.find(action.title, 'Fix All')
+      end
+    })
+    -- mostly cause I've gotten semi use to C-Q, and idk how much i love the trouble extension
+  end, '[F]ix... [Q]uick!')
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   -- nmap('gds', ':vsplit<CR<Cmd>lua vim.lsp.buf.definition()<CR>', '[G]oto [D]efinition with a [S]plit')
@@ -343,8 +361,8 @@ cmp.setup {
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete {},
     ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
+      -- behavior = cmp.ConfirmBehavior.Replace,
+      -- select = true,
     },
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then

@@ -10,10 +10,15 @@ return {
     config = function()
         require("telescope").load_extension("flutter")
         require("flutter-tools").setup({
+            dev_log = { enabled = false },
+            widget_guides = { enabled = true },
+            lsp = {
+                color = { enabled = true },
+            },
             debugger = {
                 -- integrate with nvim dap + install dart code debugger
-                enabled = false,
-                run_via_dap = false, -- use dap instead of a plenary job to run flutter apps
+                enabled = true,
+                run_via_dap = true, -- use dap instead of a plenary job to run flutter apps
                 -- if empty dap will not stop on any exceptions, otherwise it will stop on those specified
                 -- see |:help dap.set_exception_breakpoints()| for more info
                 exception_breakpoints = {},
@@ -21,6 +26,11 @@ return {
                     require("dap").configurations.dart = {}
                     require("dap.ext.vscode").load_launchjs()
                 end
+            },
+            lsp = {
+                settings = {
+                    -- analysisExcludedFolders = { ".dart_tool/**", "**/.*" }
+                }
             }
         })
     end

@@ -21,8 +21,28 @@ return {
     'leoluz/nvim-dap-go',
   },
   config = function()
-    local dap = require 'dap'
-    local dapui = require 'dapui'
+    local dap = require('dap')
+    local dapui = require('dapui')
+    -- dap.adapters.dart = {
+    --   type = 'executable',
+    --   command = 'flutter',
+    --   args = { 'debug_adapter' },
+    -- }
+    -- dap.configurations.dart = {
+    --   {
+    --     -- The first three options are required by nvim-dap
+    --     type = 'dart',
+    --     request = 'launch',
+    --     name = 'Flutter',
+    --     -- If you have a flutter project, use flutterRunDebug
+    --     program = "${file}",
+    --     cwd = "${workspaceFolder}",
+    --     toolArgs = { "-d", "linux" }
+    --     --program = 'lib/main.dart',
+    --     -- flutterRunDebug is the default if no 'program' is specified
+    --     -- flutterRunDebug = 'lib/main.dart',
+    --   },
+    -- }
 
     require('mason-nvim-dap').setup {
       -- Makes a best effort to setup the various debuggers with
@@ -53,7 +73,7 @@ return {
 
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
-    dapui.setup {
+    dapui.setup({
       -- Set icons to characters that are more likely to work in every terminal.
       --    Feel free to remove or use ones that you like more! :)
       --    Don't feel like these are good choices.
@@ -71,11 +91,46 @@ return {
           disconnect = "⏏",
         },
       },
-    }
+      layouts = {
+        {
+          -- You can change the order of elements in the sidebar
+          elements = {
+            -- Provide IDs as strings or tables with "id" and "size" keys
+            {
+              id = "scopes",
+              size = 0.25, -- Can be float or integer > 1
+            },
+            { id = "breakpoints", size = 0.25 },
+            { id = "stacks",      size = 0.25 },
+            { id = "watches",     size = 0.25 },
+          },
+          size = 40,
+          position = "left", -- Can be "left" or "right"
+        },
+        {
+          elements = {
+            "repl",
+            "console",
+          },
+          size = 10,
+          position = "bottom", -- Can be "bottom" or "top"
+        },
+        {
+          elements = { "repl" },
+          size = 15,
+          position = "bottom",
+        }
+      },
+    })
     -- toggle to see last session result. Without this ,you can't see session output in case of unhandled exception.
-    vim.keymap.set("n", "<F7>", dapui.toggle)
+    vim.keymap.set("n", "<F7>", dapui.toggle, { desc = "DapUI Toggle" })
+    vim.keymap.set("n", "<F8>", dapui.close, { desc = "DapUI close" })
+    vim.keymap.set("n", "<F6>", function()
+      dapui.close()
+      dapui.open({ layout = 3 })
+    end, { desc = "open default small" })
 
-    dap.listeners.after.event_initialized['dapui_config'] = dapui.open
+    dap.listeners.after.event_initialized['dapui_config'] = function() dapui.open({ layout = 3 }) end
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
