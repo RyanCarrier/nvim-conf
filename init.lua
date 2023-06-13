@@ -189,6 +189,15 @@ local on_attach = function(_, bufnr)
     })
     -- mostly cause I've gotten semi use to C-Q, and idk how much i love the trouble extension
   end, '[F]ix... [Q]uick!')
+  nmap('<leader>fi', function()
+    vim.lsp.buf.code_action({
+      apply = true,
+      filter = function(action)
+        return string.find(action.title, "Import library 'package")
+      end
+
+    })
+  end, '[F]ix [I]mport')
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   -- nmap('gds', ':vsplit<CR<Cmd>lua vim.lsp.buf.definition()<CR>', '[G]oto [D]efinition with a [S]plit')

@@ -86,7 +86,7 @@ return {
           step_over = '⏭',
           step_out = '⏮',
           step_back = 'b',
-          run_last = '▶▶',
+          -- run_last = '▶▶',
           terminate = '⏹',
           disconnect = "⏏",
         },
