@@ -457,6 +457,12 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz")
 
 vim.keymap.set("x", "<leader>p", [["_dP"]])
 
+vim.keymap.set('n', '<C-q>', vim.cmd.Ex, { desc = "[Q]uit" })
+vim.keymap.set('i', '<C-c>', '<Esc>')
+vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
+vim.keymap.set('n', '<leader>Y', [["+Y]])
+vim.keymap.set('n', 'n', "nzzzv")
+vim.keymap.set('n', 'N', "Nzzzv")
 
 -- need to learn about cnext and lnext
 -- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
@@ -469,3 +475,4 @@ vim.keymap.set("n", "<left>", "<C-w>h")
 vim.keymap.set("n", "<down>", "<C-w>j")
 vim.keymap.set("n", "<up>", "<C-w>k")
 vim.keymap.set("n", "<right>", "<C-w>l")
+vim.keymap.set("n", "<C-i>", "<C-a>")
