@@ -27,11 +27,6 @@ return {
                     require("dap.ext.vscode").load_launchjs()
                 end
             },
-            lsp = {
-                settings = {
-                    -- analysisExcludedFolders = { ".dart_tool/**", "**/.*" }
-                }
-            }
         })
     end
 }

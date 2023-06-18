@@ -4,6 +4,8 @@ return {
   -- Git related plugins
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
+
+  -- multi line ctrl-n
   'mg979/vim-visual-multi',
 
   -- Detect tabstop and shiftwidth automatically

@@ -1,4 +1,5 @@
 require("rcarrier")
+require("after")
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -348,10 +349,19 @@ wk.register({
 -- See `:help cmp`
 local cmp = require('cmp')
 local luasnip = require('luasnip')
--- require('luasnip.loaders.from_vscode').lazy_load()
-luasnip.config.setup({})
+vim.keymap.set('n', '<space>ss', "<cmd>source ~/.config/nvim/lua/after/luasnip.lua<CR>")
+vim.keymap.set({ "i", "s" }, "<C-s>", function()
+  if luasnip.expand_or_jumpable() then
+    luasnip.expand_or_jump()
+  end
+end, { silent = true })
 
-cmp.setup {
+vim.keymap.set("i", "<C-l>", function()
+  if luasnip.choice_activate() then
+    luasnip.change_choice(1)
+  end
+end)
+cmp.setup({
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
@@ -368,13 +378,15 @@ cmp.setup {
     ['<C-k>'] = cmp.mapping.select_prev_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete {},
-    ['<CR>'] = cmp.mapping.confirm {
+    ['<C-Space>'] = cmp.mapping.complete({}),
+    ['<CR>'] = cmp.mapping.confirm({
       -- behavior = cmp.ConfirmBehavior.Replace,
       -- select = true,
-    },
+    }),
     ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
+      if luasnip.locally_jumpable() then
+        luasnip.jump(1)
+      elseif cmp.visible() then
         cmp.select_next_item()
       elseif luasnip.expand_or_locally_jumpable() then
         luasnip.expand_or_jump()
@@ -400,7 +412,7 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
   },
-}
+})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
