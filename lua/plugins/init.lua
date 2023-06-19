@@ -14,6 +14,7 @@ return {
   --undo list
   'mbbill/undotree',
   'machakann/vim-sandwich',
+  'rcarriga/nvim-notify',
 
   {
     'b0o/incline.nvim',
@@ -26,6 +27,7 @@ return {
   "RRethy/vim-illuminate",
   "danilamihailov/beacon.nvim",
   "eandrju/cellular-automaton.nvim",
+  "levouh/tint.nvim",
   {
     'petertriho/nvim-scrollbar',
     config = function()

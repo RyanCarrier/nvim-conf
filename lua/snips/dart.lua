@@ -19,86 +19,10 @@ local types = require("luasnip.util.types")
 local conds = require("luasnip.extras.conditions")
 local conds_expand = require("luasnip.extras.conditions.expand")
 
-local same = function(index)
-	return f(function(arg)
-		return arg[1]
-	end, { index })
-end
 require('luasnip.session.snippet_collection').clear_snippets("dart")
-print("HELLO FRIEND")
-
-
-
---
--- -- Using LSP
--- local lsp = vim.lsp
--- local params = lsp.util.make_position_params()
--- local result = lsp.buf_request_sync(0, "textDocument/definition", params, 1000)
--- local class_node = result[1].result[1]
--- local param1_node = class_node:descendant_for_named("field_declaration", "param1")
--- local param2_node = class_node:descendant_for_named("field_declaration", "param2")
--- local param1_value = param1_node:descendant_for_named("string"):text()
--- local param2_value = param2_node:descendant_for_named("string"):text()
---
 
 local ts_utils = require("nvim-treesitter.ts_utils")
-local ts_locals = require "nvim-treesitter.locals"
 local get_node_text = vim.treesitter.get_node_text
-
-
-local function get_parameters(args)
-	-- local cursor_node = ts_utils.get_node_at_cursor()
-	-- local scope = ts_utils.get_scope_tree(cursor_noe, 0)
-	-- Using Tree-sitter
-	local ts = require("nvim-treesitter")
-	local bufnr = vim.api.nvim_get_current_buf()
-	local x = {}
-	local node = ts_utils.get_node_at_cursor()
-	while node ~= nil and node:type() ~= "class_definition" do
-		node = node:parent()
-	end
-	if node == nil then
-		error("No class_definition node")
-	end
-	local class_name = get_node_text(node:field("name")[1], bufnr)
-	local root_node = node:tree():root()
-
-	local query_pattern = [[
-		(class_declaration
-			(name) @class_name
-			(field_declaration
-				(identifier) @param_name
-				(string) @param_value
-			)
-		)
-	]]
-	local parser = vim.treesitter.get_parser(bufnr, "dart", nil)
-	local query = vim.treesitter.query.parse("dart", query_pattern)
-	for _, captured_node, metadata in query:iter_captures(root_node, bufnr) do
-		-- local function_name = get_node_text(node,bufnr)
-
-		print('Found function:', vim.inspect(captured_node))
-		table.insert(x, t(captured_node))
-	end
-
-
-
-	-- local decleration_node
-	-- vim.tresitter.query.parse(
-	-- 	"dart",
-	-- 	"((class_declaration (identifier) @class_name) @class_declaration)",
-	-- 	function(match)
-	-- 		decleration_node = match.captures[1]
-	-- 	end
-	-- )
-	table.insert(x, t(class_name))
-	table.insert(x, t("DIDRUN"))
-
-
-
-
-	return sn(nil, x)
-end
 
 local function get_first_single_child(node, child_type)
 	local children = node:iter_children()
@@ -124,7 +48,6 @@ local function node_has(node, has)
 		return valid
 	end
 	local children = node:iter_children()
-
 	for child in children do
 		if child:type() == has then
 			return true
@@ -132,6 +55,7 @@ local function node_has(node, has)
 	end
 	return false
 end
+
 local function get_multi_child(node, child_type, filter_with_nodes)
 	--filter_with_nodes to check that is has children of a certain type(s)
 	-- table or string, TODO: do proper doc for this
@@ -157,11 +81,8 @@ local function get_multi_child(node, child_type, filter_with_nodes)
 	return x
 end
 
-local function get_parameters_without_query(args)
+local function get_parameters_without_query()
 	--we have officially given up on figuring out how to get query to work...
-	local class_definition = "class_definition"
-	local body = ""
-	local ts = require("nvim-treesitter")
 	local bufnr = vim.api.nvim_get_current_buf()
 	local node = ts_utils.get_node_at_cursor()
 	while node ~= nil and node:type() ~= "class_definition" do
@@ -223,6 +144,16 @@ ls.add_snippets("dart", {
 	s({ trig = "copyw", name = "Generate copyWith" },
 		d(1, get_parameters_without_query, {})
 	),
+	s({ trig = "ei", name = "EdgeInsets" },
+		-- todo: test this one lol (the default works)
+		{ t("EdgeInsets."),
+			c(1, {
+				fmt("all({}),", i(1, "8")),
+				fmt("symmetric( horizontal: {}),", i(1, "8")),
+				fmt("symmetric( vertical: {}),", i(1, "8")),
+				fmt("only(left: {}, top: {}, right: {}, bottom: {}),", { i(1, "8"), i(2, "8"), i(3, "8"), i(4, "8") }),
+			}),
+		}),
 
 	s({ trig = "ss", name = "setState" },
 		f("setState((){{\n\t{}\n}});", { i(1) })
