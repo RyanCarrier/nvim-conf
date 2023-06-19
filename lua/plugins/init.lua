@@ -172,6 +172,13 @@ return {
       -- end
     }
   },
+  {
+    'nvim-treesitter/playground',
+    config = function()
+      vim.keymap.set('n', '<leader>tp', ':TSPlaygroundToggle<CR>',
+        { desc = "[T]reesitter [P]layground", noremap = true, silent = true })
+    end
+  },
 
   {
     -- Highlight, edit, and navigate code
