@@ -147,12 +147,13 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open float
 --vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 
+local bufnr0 = vim.api.nvim_get_current_buf()
 vim.keymap.set("n", "<Leader>q", function()
   vim.diagnostic.setloclist({ open = false }) -- don't open and focus
   local window = vim.api.nvim_get_current_win()
   vim.cmd.lwindow()                           -- open+focus loclist if has entries, else close -- this is the magic toggle command
   vim.api.nvim_set_current_win(window)        -- restore focus to window you were editing (delete this if you want to stay in loclist)
-end, { buffer = bufnr, desc = 'Open diagnostics list' })
+end, { buffer = bufnr0, desc = 'Open diagnostics list' })
 
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
@@ -488,3 +489,22 @@ vim.keymap.set("n", "<down>", "<C-w>j")
 vim.keymap.set("n", "<up>", "<C-w>k")
 vim.keymap.set("n", "<right>", "<C-w>l")
 vim.keymap.set("n", "<C-i>", "<C-a>")
+
+-- vim.lsp.handlers["textDocument/publishDiagnostics"] = function(err, method, params, client_id, bufnr, config)
+--   local diagnostics = params.diagnostics
+--   if not diagnostics then
+--     return
+--   end
+--
+--   -- Filter out diagnostics containing "TODO"
+--   local filtered_diagnostics = {}
+--   for _, diagnostic in ipairs(diagnostics) do
+--     if not string.match(diagnostic.message, "TODO") then
+--       table.insert(filtered_diagnostics, diagnostic)
+--     end
+--   end
+--
+--   -- Call the default handler with the filtered diagnostics
+--   params.diagnostics = filtered_diagnostics
+--   return vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, config or {})(err, method, params, client_id, bufnr)
+-- end

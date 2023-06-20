@@ -9,7 +9,7 @@ return
                 auto_trigger = true,
                 keymap = {
                     accept = "<M-j>",
-                    accept_line = "<C-l>",
+                    accept_line = "<M-l>",
                     --  accept_word = "<M-k>",
                     next = "<M-]>",
                     prev = "<M-[>",
@@ -35,6 +35,7 @@ return
                 settings = {
                     advanced = {
                         inlineSuggestCount = 3,
+                        listCount = 5,
                     }
                 }
             }

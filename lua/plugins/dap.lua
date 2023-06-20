@@ -117,7 +117,7 @@ return {
         },
         {
           elements = { "repl" },
-          size = 15,
+          size = 10,
           position = "bottom",
         }
       },

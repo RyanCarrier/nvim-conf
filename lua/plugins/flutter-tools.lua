@@ -14,6 +14,9 @@ return {
             widget_guides = { enabled = true },
             lsp = {
                 color = { enabled = true },
+                settings = {
+                    showTodos = false,
+                }
             },
             debugger = {
                 -- integrate with nvim dap + install dart code debugger
