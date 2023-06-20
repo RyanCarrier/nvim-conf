@@ -2,7 +2,6 @@ require("rcarrier")
 require("after")
 
 -- [[ Highlight on yank ]]
--- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
@@ -29,8 +28,7 @@ require('telescope').setup {
     },
   },
 }
---require('telescope').load_extension("fzf")
---require("telescope").load_extension("flutter")
+
 require("telescope").load_extension("file_browser")
 vim.keymap.set('n', "<leader>fb", function()
   require("telescope").extensions.file_browser.file_browser({
@@ -42,8 +40,9 @@ end, { desc = "[F]ile [B]rowser" })
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
-vim.keymap.set("n", "<leader>fl", function() require("telescope").extensions.flutter.commands() end,
-  { desc = "[Fl]utter" })
+vim.keymap.set("n", "<leader>fl", function()
+  require("telescope").extensions.flutter.commands()
+end, { desc = "[Fl]utter" })
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
@@ -68,7 +67,6 @@ vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { de
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>tk', require('telescope.builtin').keymaps, { desc = '[T]elescope [K]eymaps' })
-
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -128,6 +126,7 @@ require('nvim-treesitter.configs').setup {
     swap = {
       enable = true,
       swap_next = {
+        -- lol
         ['<leader>a'] = '@parameter.inner',
       },
       swap_previous = {
@@ -144,24 +143,10 @@ require('nvim-treesitter.configs').setup {
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
---vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
-
-
-local bufnr0 = vim.api.nvim_get_current_buf()
-vim.keymap.set("n", "<Leader>q", function()
-  vim.diagnostic.setloclist({ open = false }) -- don't open and focus
-  local window = vim.api.nvim_get_current_win()
-  vim.cmd.lwindow()                           -- open+focus loclist if has entries, else close -- this is the magic toggle command
-  vim.api.nvim_set_current_win(window)        -- restore focus to window you were editing (delete this if you want to stay in loclist)
-end, { buffer = bufnr0, desc = 'Open diagnostics list' })
 
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
-  -- NOTE: Remember that lua is a real programming language, and as such it is possible
-  -- to define small helper and utility functions so you don't have to repeat yourself
-  -- many times.
-  --
   -- In this case, we create a function that lets us more easily define mappings specific
   -- for LSP related items. It sets the mode, buffer and description for us each time.
   local nmap = function(keys, func, desc)
@@ -170,50 +155,44 @@ local on_attach = function(_, bufnr)
     end
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
+  -- cafilter to disgustingly code action filter
+  --  return a function so can be directly called with no issue
+  local cafilter = function(filter)
+    return function()
+      vim.lsp.buf.code_action({
+        apply = true,
+        filter = function(action)
+          return string.find(action.title, filter)
+        end
+      })
+    end
+  end
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-  nmap('<leader>ww', function()
-    vim.lsp.buf.code_action({
-      apply = true,
-      filter = function(action)
-        return string.find(action.title, 'Wrap with widget')
-      end
-
-    })
-  end, '[W]rap [W]idget')
-  nmap('<leader>fq', function()
-    vim.lsp.buf.code_action({
-      apply = true,
-      filter = function(action)
-        return string.find(action.title, 'Fix All')
-      end
-    })
-    -- mostly cause I've gotten semi use to C-Q, and idk how much i love the trouble extension
-  end, '[F]ix... [Q]uick!')
-  nmap('<leader>fi', function()
-    vim.lsp.buf.code_action({
-      apply = true,
-      filter = function(action)
-        return string.find(action.title, "Import library 'package")
-      end
-
-    })
-  end, '[F]ix [I]mport')
+  nmap('<leader>ww', cafilter('Wrap with widget'), '[W]rap [W]idget')
+  nmap('<leader>wr', cafilter('Wrap with Row'), '[W]rap [R]ow')
+  nmap('<leader>wc', cafilter('Wrap with Col'), '[W]rap [C]olumn')
+  nmap('<leader>wp', cafilter('Wrap with Pad'), '[W]rap [P]adding')
+  -- mostly cause I've gotten semi use to C-Q, and idk how much i love the trouble extension
+  nmap('<leader>fq', cafilter('Fix All'), '[F]ix... [Q]uick!')
+  nmap('<leader>q', cafilter('Fix All'), '[Q]uicky fixy')
+  nmap('<leader>fi', cafilter("Import library 'package"), '[F]ix [I]mport')
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-  -- nmap('gds', ':vsplit<CR<Cmd>lua vim.lsp.buf.definition()<CR>', '[G]oto [D]efinition with a [S]plit')
+  nmap('gsd', function()
+    -- create a vertical split
+    vim.api.nvim_command("vsplit")
+    -- jump to the new split
+    vim.api.nvim_command("wincmd l")
+    vim.lsp.buf.definition()
+  end, '[G]oto [D]efinition with a [S]plit')
   nmap('gr', function()
     require('telescope.builtin').lsp_references({
-      include_decleration = false,
+      -- it pays to know how to spell declaration
+      include_declaration = false,
     })
   end, '[G]oto [R]eferences')
-  -- ignore this attempt to try get to the only reference that is not it's definition
-  -- nmap('<leader>gR', "<cmd>lua vim.lsp.buf.references()<cr><cr>", '[G]oto [R]eferences')
-  -- nmap('<leader>gR', function()
-  --   vim.lsp.buf.references()
-  --   vim.cmd('normal! zz')
-  -- end, '[G]oto [R]eferences')
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
@@ -223,13 +202,13 @@ local on_attach = function(_, bufnr)
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
   -- REMOVED to allow for j and k
-  -- I don't think this does need to be removed
+  -- I don't think this does need to be removed (it doesn't, C-k is used in insert mode for selection, not normal)
   nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
   nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-  nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+  -- nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
   nmap('<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
@@ -271,11 +250,11 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
 
-mason_lspconfig.setup {
+mason_lspconfig.setup({
   ensure_installed = vim.tbl_keys(servers),
-}
+})
 
-mason_lspconfig.setup_handlers {
+mason_lspconfig.setup_handlers({
   function(server_name)
     require('lspconfig')[server_name].setup {
       capabilities = capabilities,
@@ -283,15 +262,14 @@ mason_lspconfig.setup_handlers {
       settings = servers[server_name],
     }
   end,
-}
+})
+-- I already have attach done in flutter toosl setup, pretty sure it's all auto
+-- don't need to use the custom on_attach
+-- ok seems like I do need it, maybe move config to here then lol
+-- (probably don't actually need it, just that all the keymaps are applied on the 'on_attach')
 require('flutter-tools').setup({
   lsp = {
     on_attach = on_attach,
-    color = {
-      enabled = true,
-      virtual_text = true,
-      virtual_text_str = "■",
-    }
   }
 })
 require('rust-tools').setup({
@@ -300,15 +278,14 @@ require('rust-tools').setup({
   },
 })
 
+-- this should probably be done correctly...
 local wk = require("which-key")
 local chatgpt = require("chatgpt")
 wk.register({
   a = {
     name = "ChatGPT",
     i = {
-      function()
-        chatgpt.edit_with_instructions()
-      end,
+      chatgpt.edit_with_instructions,
       "Edit with instructions",
     },
   },
@@ -321,9 +298,7 @@ wk.register({
   a = {
     name = "ChatGPT",
     i = {
-      function()
-        chatgpt.openChat()
-      end,
+      chatgpt.openChat,
       "Chat with [AI]",
     },
   },
@@ -355,7 +330,7 @@ vim.keymap.set({ "i", "s" }, "<C-s>", function()
   if luasnip.expand_or_jumpable() then
     luasnip.expand_or_jump()
   end
-end, { silent = true })
+end, { silent = true, desc = "Snippets" })
 
 vim.keymap.set("i", "<C-l>", function()
   if luasnip.choice_activate() then
@@ -405,15 +380,12 @@ cmp.setup({
       end
     end, { 'i', 's' }),
   },
-
-
-
-
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
   },
 })
+
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
@@ -440,26 +412,13 @@ vim.diagnostic.config {
 vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { noremap = true, silent = true })
 
 -- Lua -- TROUBLE
-vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>",
-  { silent = true, noremap = true }
-)
-vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>",
-  { silent = true, noremap = true }
-)
-vim.keymap.set("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>",
-  { silent = true, noremap = true }
-)
-vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>",
-  { silent = true, noremap = true }
-)
-vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>",
-  { silent = true, noremap = true }
-)
-vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>",
-  { silent = true, noremap = true }
-)
--- vim.api.nvim_set_keymap('i', "<C-BS>", "<C-o>db", { noremap = true })
--- vim.api.nvim_set_keymap('i', "<C-Del>", "<C-o>dw", { noremap = true })
+vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>", { silent = true, noremap = true })
+vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", { silent = true, noremap = true })
+vim.keymap.set("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", { silent = true, noremap = true })
+vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", { silent = true, noremap = true })
+vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", { silent = true, noremap = true })
+vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", { silent = true, noremap = true })
+vim.api.nvim_set_keymap('i', "<C-Del>", "<C-o>dw", { noremap = true })
 -- ctrl backspace to delete word
 vim.api.nvim_set_keymap('i', "<C-H>", "<C-W>", { noremap = true })
 
@@ -468,12 +427,12 @@ vim.keymap.set("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>", { 
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 
+vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
+vim.keymap.set('n', '<leader>Y', [["+Y]])
 vim.keymap.set("x", "<leader>p", [["_dP"]])
 
 vim.keymap.set('n', '<C-q>', vim.cmd.Ex, { desc = "[Q]uit" })
 vim.keymap.set('i', '<C-c>', '<Esc>')
-vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
-vim.keymap.set('n', '<leader>Y', [["+Y]])
 vim.keymap.set('n', 'n', "nzzzv")
 vim.keymap.set('n', 'N', "Nzzzv")
 
@@ -488,23 +447,5 @@ vim.keymap.set("n", "<left>", "<C-w>h")
 vim.keymap.set("n", "<down>", "<C-w>j")
 vim.keymap.set("n", "<up>", "<C-w>k")
 vim.keymap.set("n", "<right>", "<C-w>l")
-vim.keymap.set("n", "<C-i>", "<C-a>")
-
--- vim.lsp.handlers["textDocument/publishDiagnostics"] = function(err, method, params, client_id, bufnr, config)
---   local diagnostics = params.diagnostics
---   if not diagnostics then
---     return
---   end
---
---   -- Filter out diagnostics containing "TODO"
---   local filtered_diagnostics = {}
---   for _, diagnostic in ipairs(diagnostics) do
---     if not string.match(diagnostic.message, "TODO") then
---       table.insert(filtered_diagnostics, diagnostic)
---     end
---   end
---
---   -- Call the default handler with the filtered diagnostics
---   params.diagnostics = filtered_diagnostics
---   return vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, config or {})(err, method, params, client_id, bufnr)
--- end
+-- remap increment/decrement (just inc)
+vim.keymap.set("n", "<M-x>", "<C-a>")

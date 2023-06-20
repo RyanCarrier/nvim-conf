@@ -5,15 +5,21 @@ return {
         'nvim-lua/plenary.nvim',
         'stevearc/dressing.nvim', -- optional for vim.ui.select
         'mfussenegger/nvim-dap',
-
     },
     config = function()
         require("telescope").load_extension("flutter")
         require("flutter-tools").setup({
-            dev_log = { enabled = false },
-            widget_guides = { enabled = true },
+            dev_log = {
+                enabled = false,
+            },
+            widget_guides = {
+                enabled = true,
+            },
             lsp = {
-                color = { enabled = true },
+                color = {
+                    enabled = true,
+                    virtual_text = true,
+                },
                 settings = {
                     showTodos = false,
                 }
