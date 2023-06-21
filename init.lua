@@ -15,7 +15,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
 local actions = require('telescope.actions')
-require('telescope').setup {
+require('telescope').setup({
   defaults = {
     mappings = {
       i = {
@@ -27,7 +27,7 @@ require('telescope').setup {
       -- n = {},
     },
   },
-}
+})
 
 require("telescope").load_extension("file_browser")
 vim.keymap.set('n', "<leader>fb", function()
@@ -179,7 +179,7 @@ local on_attach = function(_, bufnr)
   nmap('<leader>q', cafilter('Fix All'), '[Q]uicky fixy')
   nmap('<leader>fi', cafilter("Import library 'package"), '[F]ix [I]mport')
 
-  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+  nmap('gd', function() vim.lsp.buf.definition({ reuse_win = true }) end, '[G]oto [D]efinition')
   nmap('gsd', function()
     -- create a vertical split
     vim.api.nvim_command("vsplit")
