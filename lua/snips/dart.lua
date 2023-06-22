@@ -141,6 +141,7 @@ end
 
 
 ls.add_snippets("dart", {
+	-- TODO: make one for to string, make one for equality, maybe one for compareto idk
 	s({ trig = "copyw", name = "Generate copyWith" },
 		d(1, get_parameters_without_query, {})
 	),
