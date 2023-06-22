@@ -337,7 +337,15 @@ vim.keymap.set("i", "<C-l>", function()
     luasnip.change_choice(1)
   end
 end)
+local lspkind = require('lspkind')
 cmp.setup({
+  formatting = {
+    format = lspkind.cmp_format({
+      mode = 'symbol_text',
+      -- maxwidth = 50,
+      -- ellipsis_char = '...',
+    })
+  },
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
@@ -408,6 +416,9 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
 vim.diagnostic.config {
   float = { border = _border }
 }
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- TS file_browser
 vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { noremap = true, silent = true })
 
@@ -431,7 +442,8 @@ vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
 vim.keymap.set('n', '<leader>Y', [["+Y]])
 vim.keymap.set("x", "<leader>p", [["_dP"]])
 
-vim.keymap.set('n', '<C-q>', vim.cmd.Ex, { desc = "[Q]uit" })
+-- we have oil now taking this binding
+-- vim.keymap.set('n', '<C-q>', vim.cmd.Ex, { desc = "[Q]uit" })
 vim.keymap.set('i', '<C-c>', '<Esc>')
 vim.keymap.set('n', 'n', "nzzzv")
 vim.keymap.set('n', 'N', "Nzzzv")

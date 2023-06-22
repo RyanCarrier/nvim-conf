@@ -11,11 +11,28 @@ return {
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
+  'nvim-tree/nvim-tree.lua',
+  'stevearc/dressing.nvim',
+  {
+    'stevearc/overseer.nvim',
+    config = function()
+      local o = require('overseer')
+      o.setup()
+      vim.keymap.set('n', '<leader>ta', o.run_template, { desc = '[Ta]sks' })
+    end
+  },
+
   --undo list
   'mbbill/undotree',
   'machakann/vim-sandwich',
   'rcarriga/nvim-notify',
-
+  -- zenmode
+  'folke/zen-mode.nvim',
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
   {
     'b0o/incline.nvim',
     config = function()
@@ -94,13 +111,13 @@ return {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = {
+      'onsails/lspkind-nvim',
       --     'hrsh7th/cmp-nvim-lua',
       'hrsh7th/cmp-nvim-lsp-signature-help',
       'hrsh7th/cmp-vsnip',
       'hrsh7th/cmp-path',
       --     'hrsh7th/cmp-buffer',
       'hrsh7th/vim-vsnip',
-
 
       -- Snippet Engine & its associated nvim-cmp source
       'L3MON4D3/LuaSnip',
@@ -113,6 +130,8 @@ return {
       'rafamadriz/friendly-snippets',
     },
   },
+
+
 
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim', opts = {} },
@@ -135,7 +154,11 @@ return {
     },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      require('lualine').setup({})
+      require('lualine').setup({
+        sections = {
+          lualine_x = { "overseer" },
+        }
+      })
     end
   },
 

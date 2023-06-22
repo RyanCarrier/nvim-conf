@@ -56,18 +56,37 @@ return {
         -- end
 
       })
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd.colorscheme('tokyonight-night')
     end
   },
   { "nyoom-engineering/oxocarbon.nvim", name = 'oxocarbon' },
   { 'rafamadriz/neon',                  name = 'neon' },
   { "catppuccin/nvim",                  name = "catppuccin" },
   {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
-    --  config = function()
-    --    vim.cmd.colorscheme 'onedark'
-    --  end,
+    'olimorris/onedarkpro.nvim',
+    -- vim.cmd("colorscheme onedark")
+    -- onedark, onelight, onedark_vivid, onedark_dark
+    config = function()
+      require('onedarkpro').setup({
+        highlights = {
+
+        }
+
+      })
+      local options = { "onedark", "onelight", "onedark_vivid", "onedark_dark" }
+      -- vim.cmd.colorscheme(options[4])
+    end
+  },
+  {
+    'marko-cerovac/material.nvim',
+    -- vim.cmd("colorscheme material")
+    -- vim.g.material_style = "deep ocean"
+    -- darker, lighter, oceanic, palenight, deep ocean
+    config = function()
+      local options = { "darker", "lighter", "oceanic", "palenight", "deep ocean" }
+      -- vim.g.material_style = options[5]
+      -- vim.cmd.colorscheme('material')
+    end
   },
 
 }
