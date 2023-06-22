@@ -333,9 +333,9 @@ vim.keymap.set({ "i", "s" }, "<C-s>", function()
 end, { silent = true, desc = "Snippets" })
 
 vim.keymap.set("i", "<C-l>", function()
-  if luasnip.choice_activate() then
-    luasnip.change_choice(1)
-  end
+  -- if luasnip.choice_activate() then
+  luasnip.change_choice(1)
+  -- end
 end)
 local lspkind = require('lspkind')
 cmp.setup({

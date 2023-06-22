@@ -249,5 +249,11 @@ class <>State extends ConsumerState<<<>>> {
 		}
 		]], { i(1), i(2), rep(1), rep(1), i(0) })
 	),
+	s({ trig = "c", name = "child(ren):" },
+		c(1, {
+			fmt("\nchild: {},\n", i(1)),
+			fmt("children: [\n\t{},\n\t],\n", i(1)),
+		})
+	),
 
 })
