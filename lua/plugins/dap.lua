@@ -60,16 +60,20 @@ return {
         'delve',
       },
     }
+    local nmap = function(keys, func, desc)
+      if desc then desc = 'DAP: ' .. desc end
+      vim.keymap.set('n', keys, func, { desc = desc })
+    end
 
     -- Basic debugging keymaps, feel free to change to your liking!
-    vim.keymap.set('n', '<F5>', dap.continue)
-    vim.keymap.set('n', '<F1>', dap.step_into)
-    vim.keymap.set('n', '<F2>', dap.step_over)
-    vim.keymap.set('n', '<F3>', dap.step_out)
-    vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint)
-    vim.keymap.set('n', '<leader>B', function()
+    nmap('<F5>', dap.continue, "Continue")
+    nmap('<F1>', dap.step_into, "Step into")
+    nmap('<F2>', dap.step_over, "Step over")
+    nmap('<F3>', dap.step_out, "Step out")
+    nmap('<leader>b', dap.toggle_breakpoint, "Toggle [b]reakpoint")
+    nmap('<leader>B', function()
       dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
-    end)
+    end, "Conditional [B]reakpoint")
 
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
@@ -123,12 +127,12 @@ return {
       },
     })
     -- toggle to see last session result. Without this ,you can't see session output in case of unhandled exception.
-    vim.keymap.set("n", "<F7>", dapui.toggle, { desc = "DapUI Toggle" })
-    vim.keymap.set("n", "<F8>", dapui.close, { desc = "DapUI close" })
-    vim.keymap.set("n", "<F6>", function()
+    nmap("<F7>", dapui.toggle, "DapUI Toggle")
+    nmap("<F8>", dapui.close, "DapUI Close")
+    nmap("<F6>", function()
       dapui.close()
       dapui.open({ layout = 3 })
-    end, { desc = "open default small" })
+    end, "Open default small")
 
     dap.listeners.after.event_initialized['dapui_config'] = function() dapui.open({ layout = 3 }) end
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close

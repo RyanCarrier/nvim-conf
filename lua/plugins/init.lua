@@ -21,6 +21,7 @@ return {
       vim.keymap.set('n', '<leader>ta', o.run_template, { desc = '[Ta]sks' })
     end
   },
+  'akinsho/bufferline.nvim',
 
   --undo list
   'mbbill/undotree',

@@ -28,6 +28,13 @@ require('telescope').setup({
     },
   },
 })
+require("telescope").setup({
+  pickers = {
+    colorscheme = {
+      enable_preview = true
+    }
+  }
+})
 
 require("telescope").load_extension("file_browser")
 vim.keymap.set('n', "<leader>fb", function()
@@ -142,6 +149,9 @@ require('nvim-treesitter.configs').setup {
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+-- make this next and prev error
+-- vim.keymap.set('n', '[e', vim.diagnostic.goto_next, { desc = 'Go to previous diagnostic message' })
+-- vim.keymap.set('n', ']e', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 
 -- [[ Configure LSP ]]
@@ -325,18 +335,18 @@ wk.register({
 -- See `:help cmp`
 local cmp = require('cmp')
 local luasnip = require('luasnip')
-vim.keymap.set('n', '<space>ss', "<cmd>source ~/.config/nvim/lua/after/luasnip.lua<CR>")
+vim.keymap.set('n', '<space>ss', "<cmd>source ~/.config/nvim/lua/after/luasnip.lua<CR>", { desc = '[S]ource [S]nippets' })
 vim.keymap.set({ "i", "s" }, "<C-s>", function()
   if luasnip.expand_or_jumpable() then
     luasnip.expand_or_jump()
   end
-end, { silent = true, desc = "Snippets" })
+end, { silent = true, desc = "[S]nippets" })
 
 vim.keymap.set("i", "<C-l>", function()
   -- if luasnip.choice_activate() then
   luasnip.change_choice(1)
   -- end
-end)
+end, { desc = "Choice change snippet" })
 local lspkind = require('lspkind')
 cmp.setup({
   formatting = {
@@ -420,7 +430,7 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
 -- TS file_browser
-vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { noremap = true, silent = true, desc = "[U]ndo tree" })
 
 -- Lua -- TROUBLE
 vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>", { silent = true, noremap = true })
@@ -429,24 +439,24 @@ vim.keymap.set("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>",
 vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", { silent = true, noremap = true })
 vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", { silent = true, noremap = true })
 vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", { silent = true, noremap = true })
-vim.api.nvim_set_keymap('i', "<C-Del>", "<C-o>dw", { noremap = true })
+vim.keymap.set('i', "<C-Del>", "<C-o>dw", { noremap = true })
 -- ctrl backspace to delete word
-vim.api.nvim_set_keymap('i', "<C-H>", "<C-W>", { noremap = true })
+vim.keymap.set('i', "<C-H>", "<C-W>", { noremap = true })
 
 vim.keymap.set("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>", { desc = "Make it rain" })
 
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Centre screen after half jump" })
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Centre screen after half jump" })
 
-vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
-vim.keymap.set('n', '<leader>Y', [["+Y]])
-vim.keymap.set("x", "<leader>p", [["_dP"]])
+vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]], { desc = "[Y]ank to clipboard" })
+vim.keymap.set('n', '<leader>Y', [["+Y]], { desc = "[Y]ank to clipboard" })
+vim.keymap.set("x", "<leader>p", [["_dP"]], { desc = "[P]aste without overwriting register" })
 
 -- we have oil now taking this binding
 -- vim.keymap.set('n', '<C-q>', vim.cmd.Ex, { desc = "[Q]uit" })
 vim.keymap.set('i', '<C-c>', '<Esc>')
-vim.keymap.set('n', 'n', "nzzzv")
-vim.keymap.set('n', 'N', "Nzzzv")
+vim.keymap.set('n', 'n', "nzzzv", { desc = "[n]ext but centered" })
+vim.keymap.set('n', 'N', "Nzzzv", { desc = "[N]ext but centered" })
 
 -- need to learn about cnext and lnext
 -- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
@@ -461,3 +471,31 @@ vim.keymap.set("n", "<up>", "<C-w>k")
 vim.keymap.set("n", "<right>", "<C-w>l")
 -- remap increment/decrement (just inc)
 vim.keymap.set("n", "<M-x>", "<C-a>")
+
+if vim.g.neovide then
+  -- scaling
+  vim.g.neovide_scale_factor = 1
+  local change_scale_factor = function(delta)
+    vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + delta
+  end
+  vim.keymap.set("n", "<C-=>", function()
+    change_scale_factor(0.05)
+  end)
+  vim.keymap.set("n", "<C-->", function()
+    change_scale_factor(-0.05)
+  end)
+  -- pasting
+  vim.keymap.set('i', '<C-S-v>', '<C-r>+', { noremap = true })
+
+  -- gamer moments
+  vim.g.neovide_refresh_rate = 144
+  vim.g.neovide_scroll_animation_length = 0.1
+  -- vim.g.neovide_profiler = true
+
+  -- cursor
+  vim.g.neovide_cursor_animation_length = 0.02
+  vim.g.neovide_cursor_trail_size = 0.5
+  vim.g.neovide_cursor_animate_command_line = true
+
+  vim.o.guifont = "DejaVuSansM Nerd Font Mono:h10"
+end
