@@ -488,9 +488,10 @@ if vim.g.neovide then
   vim.keymap.set('i', '<C-S-v>', '<C-r>+', { noremap = true })
 
   -- gamer moments
-  vim.g.neovide_refresh_rate = 144
-  vim.g.neovide_scroll_animation_length = 0.1
+  vim.g.neovide_refresh_rate = 60
+  vim.g.neovide_scroll_animation_length = 0.05
   -- vim.g.neovide_profiler = true
+
 
   -- cursor
   vim.g.neovide_cursor_animation_length = 0.02

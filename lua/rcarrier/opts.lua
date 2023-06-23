@@ -29,7 +29,7 @@ vim.opt.timeout = true
 vim.opt.timeoutlen = 300
 -- Set completeopt to have a better completion experience
 vim.opt.completeopt = 'menuone,noselect'
-vim.opt.termguicolors = true
+-- vim.opt.termguicolors = true
 --scroll 8 lines before top/bottom
 vim.opt.scrolloff = 8
 vim.opt.colorcolumn = "80"

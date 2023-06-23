@@ -12,9 +12,10 @@ return {
         -- disable italic for functions
         -- Change the "hint" color to the "orange" color, and make the "error" color bright red
         on_colors = function(colors)
-          colors.bg = colors.black
+          colors.bg = "#070707"
           colors.border = colors.purple
           colors.border_highlight = colors.purple
+          colors.bg_dark = colors.black
           -- colors.bg_search = colors.orange
 
           --colors.bg_float = colors.red
@@ -25,7 +26,7 @@ return {
 
 
         on_highlights = function(hl, c)
-          hl.ColorColumn = { bg = "#202122" }
+          hl.ColorColumn = { bg = "#101010" }
           c.bg_float = c.red
         end,
         -- might be cool to test some of these from folkes dot
@@ -48,7 +49,6 @@ return {
           floats = "dark",
         },
         sidebars = { "qf", "help" },
-
         --         hl.ctermbg = {
         --           fg = colors.green,
         --           bg = colors.cyan,
@@ -59,19 +59,42 @@ return {
       vim.cmd.colorscheme('tokyonight-night')
     end
   },
-  { "nyoom-engineering/oxocarbon.nvim", name = 'oxocarbon' },
-  { 'rafamadriz/neon',                  name = 'neon' },
-  { "catppuccin/nvim",                  name = "catppuccin" },
+  {
+    'rafamadriz/neon',
+    name = 'neon',
+    config = function()
+      vim.g.neon_style = "darker"
+      -- vim.cmd.colorscheme('neon')
+    end,
+  },
+  {
+    "bluz71/vim-moonfly-colors",
+    name = "moonfly",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- vim.cmd.colorscheme('moonfly')
+    end
+  },
+
+  {
+    'navarasu/onedark.nvim',
+    config = function()
+      require('onedark').setup({
+        style = 'darker',
+        toggle_style_key = '<leader>tt',
+      })
+      -- require('onedark').load()
+      -- vim.cmd.colorscheme('onedark')
+    end
+  },
   {
     'olimorris/onedarkpro.nvim',
     -- vim.cmd("colorscheme onedark")
     -- onedark, onelight, onedark_vivid, onedark_dark
     config = function()
       require('onedarkpro').setup({
-        highlights = {
-
-        }
-
+        highlights = {},
       })
       local options = { "onedark", "onelight", "onedark_vivid", "onedark_dark" }
       -- vim.cmd.colorscheme(options[4])
@@ -84,7 +107,7 @@ return {
     -- darker, lighter, oceanic, palenight, deep ocean
     config = function()
       local options = { "darker", "lighter", "oceanic", "palenight", "deep ocean" }
-      -- vim.g.material_style = options[5]
+      -- vim.g.material_style = options[1]
       -- vim.cmd.colorscheme('material')
     end
   },

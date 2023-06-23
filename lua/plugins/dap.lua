@@ -121,11 +121,43 @@ return {
         },
         {
           elements = { "repl" },
-          size = 10,
+          size = 20,
+          position = "bottom",
+        },
+        {
+          elements = { "repl" },
+          size = 1,
           position = "bottom",
         }
       },
     })
+    -- trougg = trouble+toggle+debug
+    local function trouggle()
+      local t = require('trouble')
+      local dap = require('dap')
+      -- local controls = require("dapui.controls")
+      dap.repl.close()
+      t.close()
+      -- local View = require("trouble.view")
+      -- trouble will also select buffer once complete (so the future vsplit applies)
+      -- correctly
+      t.open({ mode = 'document_diagnostics' })
+      --have a secret small layout for a mini repl (size 1), to enable the controlls
+      -- controlls will then be passed to any other repl window too
+      -- there was some issue doing this before trouble, I don't remember what,
+      -- no harm but it works here... just weird
+      dapui.open({ layout = 4 })
+      dapui.close()
+      require('dap').repl.open({}, 'vsplit')
+      -- need this for those little icons from dapui lmao I don't even know
+      -- dapui.update_render({})
+      -- local config = require("dapui.config")
+      -- if config.controls.enabled and config.controls.element ~= "" then
+      --   controls.enable_controls(dapui.elements[config.controls.element])
+      -- end
+      -- controls.refresh_control_panel()
+    end
+
     -- toggle to see last session result. Without this ,you can't see session output in case of unhandled exception.
     nmap("<F7>", dapui.toggle, "DapUI Toggle")
     nmap("<F8>", dapui.close, "DapUI Close")
@@ -133,8 +165,11 @@ return {
       dapui.close()
       dapui.open({ layout = 3 })
     end, "Open default small")
+    nmap("<F9>", trouggle, "Trouggle")
 
-    dap.listeners.after.event_initialized['dapui_config'] = function() dapui.open({ layout = 3 }) end
+    -- dap.listeners.after.event_initialized['dapui_config'] = function() dapui.open({ layout = 3 }) end
+    dap.listeners.after.event_initialized['dapui_config'] = trouggle
+    -- require('trouble').open({ mode = 'document_diagnostics' })
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
