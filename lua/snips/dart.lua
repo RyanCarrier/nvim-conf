@@ -141,7 +141,11 @@ end
 
 
 ls.add_snippets("dart", {
+
 	-- TODO: make one for to string, make one for equality, maybe one for compareto idk
+	s({ trig = "theme", name = "Theme of context" },
+		fmt("Theme.of(context).{}", i(1, "textTheme"))
+	),
 	s({ trig = "copyw", name = "Generate copyWith" },
 		d(1, get_parameters_without_query, {})
 	),
@@ -258,3 +262,4 @@ class <>State extends ConsumerState<<<>>> {
 	),
 
 })
+print("dart snippets loaded")
