@@ -14,7 +14,16 @@ return {
   'nvim-tree/nvim-tree.lua',
   'stevearc/dressing.nvim',
   {
+    --regex explanation
+    'tomiis4/hypersonic.nvim',
+    config = function()
+      require('hypersonic').setup({})
+    end
+  },
+  {
     'stevearc/overseer.nvim',
+    -- This isn't working with my build runner task at the moment, but I don't care too much
+    -- TODO: this
     config = function()
       local o = require('overseer')
       o.setup()
@@ -43,21 +52,21 @@ return {
 
   --highlight hovered
   "RRethy/vim-illuminate",
+  --highlight when cursor jumps
   "danilamihailov/beacon.nvim",
+  -- make buffer collapse
   "eandrju/cellular-automaton.nvim",
+  -- dim other windows
   "levouh/tint.nvim",
   {
+    --scrollbar ... lol
     'petertriho/nvim-scrollbar',
     config = function()
       require('scrollbar').setup()
     end
   },
   {
-    "nvim-telescope/telescope-file-browser.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
-  },
-
-  {
+    -- shows up top what you in/where u is
     "utilyre/barbecue.nvim",
     name = "barbecue",
     version = "*",
@@ -131,14 +140,11 @@ return {
       'rafamadriz/friendly-snippets',
     },
   },
-
-
-
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
-
-
-
+  {
+    'folke/which-key.nvim',
+    opts = {}
+  },
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
@@ -146,7 +152,7 @@ return {
     opts = {
       options = {
         -- icons_enabled = false,
-        theme = 'tokyonight', -- -night', --'onedark',
+        theme = 'tokyonight-night', -- -night', --'onedark',
         -- theme = 'material', --'tokyonight', -- -night', --'onedark',
         --component_separators = '|',
         --section_separators = '',

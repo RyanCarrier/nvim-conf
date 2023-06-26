@@ -148,7 +148,7 @@ return {
       -- no harm but it works here... just weird
       dapui.open({ layout = 4 })
       dapui.close()
-      require('dap').repl.open({}, 'vsplit')
+      dap.repl.open({}, 'vsplit')
       -- need this for those little icons from dapui lmao I don't even know
       -- dapui.update_render({})
       -- local config = require("dapui.config")

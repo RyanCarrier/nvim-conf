@@ -147,6 +147,7 @@ ls.add_snippets("dart", {
 		fmt("Theme.of(context).{}", i(1, "textTheme"))
 	),
 	s({ trig = "copyw", name = "Generate copyWith" },
+		-- need to correct for List<X> cause it don't work lol
 		d(1, get_parameters_without_query, {})
 	),
 	s({ trig = "ei", name = "EdgeInsets" },

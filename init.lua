@@ -36,13 +36,13 @@ require("telescope").setup({
   }
 })
 
-require("telescope").load_extension("file_browser")
-vim.keymap.set('n', "<leader>fb", function()
-  require("telescope").extensions.file_browser.file_browser({
-    hidden = true,
-    cwd = vim.fn.expand('%:p:h'),
-  })
-end, { desc = "[F]ile [B]rowser" })
+-- require("telescope").load_extension("file_browser")
+-- vim.keymap.set('n', "<leader>fb", function()
+--   require("telescope").extensions.file_browser.file_browser({
+--     hidden = true,
+--     cwd = vim.fn.expand('%:p:h'),
+--   })
+-- end, { desc = "[F]ile [B]rowser" })
 
 
 -- Enable telescope fzf native, if installed
