@@ -32,6 +32,17 @@ return {
   },
   'akinsho/bufferline.nvim',
 
+  --todo: it fucked up my - for oil
+  -- {
+  --   'm4xshen/hardtime.nvim',
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("hardtime").setup({
+  --     })
+  --   end
+  -- },
+  { 'folke/noice.nvim', enabled = false },
+
   --undo list
   'mbbill/undotree',
   'machakann/vim-sandwich',

@@ -192,10 +192,17 @@ local on_attach = function(_, bufnr)
   nmap('gd', function() vim.lsp.buf.definition({ reuse_win = true }) end, '[G]oto [D]efinition')
   nmap('gsd', function()
     -- create a vertical split
-    vim.api.nvim_command("vsplit")
+    vim.api.nvim_command("split")
     -- jump to the new split
-    vim.api.nvim_command("wincmd l")
+    vim.api.nvim_command("wincmd j")
     vim.lsp.buf.definition()
+    nmap('gvd', function()
+      -- create a vertical split
+      vim.api.nvim_command("vsplit")
+      -- jump to the new split
+      vim.api.nvim_command("wincmd l")
+      vim.lsp.buf.definition()
+    end, '[G]oto [D]efinition with a [S]plit')
   end, '[G]oto [D]efinition with a [S]plit')
   nmap('gr', function()
     require('telescope.builtin').lsp_references({
@@ -203,7 +210,8 @@ local on_attach = function(_, bufnr)
       include_declaration = false,
     })
   end, '[G]oto [R]eferences')
-  nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+  -- nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+  nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
