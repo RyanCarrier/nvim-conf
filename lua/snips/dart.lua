@@ -206,7 +206,7 @@ class <>State extends State<<<>>> {
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 		
-class <> extends ConsumerStatelessWidget{
+class <> extends ConsumerWidget{
     const <>({Key? key}) : super(key: key);
 
 	@override
