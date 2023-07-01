@@ -165,6 +165,12 @@ local on_attach = function(_, bufnr)
     end
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
+  local nnomap = function(keys, func, desc)
+    if desc then
+      desc = 'LSP: ' .. desc
+    end
+    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc, silent = true, noremap = true })
+  end
   -- cafilter to disgustingly code action filter
   --  return a function so can be directly called with no issue
   local cafilter = function(filter)
@@ -196,13 +202,13 @@ local on_attach = function(_, bufnr)
     -- jump to the new split
     vim.api.nvim_command("wincmd j")
     vim.lsp.buf.definition()
-    nmap('gvd', function()
-      -- create a vertical split
-      vim.api.nvim_command("vsplit")
-      -- jump to the new split
-      vim.api.nvim_command("wincmd l")
-      vim.lsp.buf.definition()
-    end, '[G]oto [D]efinition with a [S]plit')
+  end, '[G]oto [D]efinition with a [S]plit')
+  nnomap('gvd', function()
+    -- create a vertical split
+    vim.api.nvim_command("vsplit")
+    -- jump to the new split
+    vim.api.nvim_command("wincmd l")
+    vim.lsp.buf.definition()
   end, '[G]oto [D]efinition with a [S]plit')
   nmap('gr', function()
     require('telescope.builtin').lsp_references({
