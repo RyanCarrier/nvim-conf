@@ -8,7 +8,7 @@ return {
             height = 10,
             width = 50,
             icons = true,
-            mode = "lsp_document_diagnostics",
+            mode = "document_diagnostics",
             fold_open = "",
             fold_closed = "",
             action_keys = {
@@ -32,7 +32,7 @@ return {
             indent_lines = true,
             auto_open = false,
             auto_close = false,
-            auto_preview = true,
+            auto_preview = false,
             auto_fold = false,
             signs = {
                 error = "",
