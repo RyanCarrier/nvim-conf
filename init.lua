@@ -47,9 +47,6 @@ require("telescope").setup({
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
-vim.keymap.set("n", "<leader>fl", function()
-  require("telescope").extensions.flutter.commands()
-end, { desc = "[Fl]utter" })
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
@@ -256,6 +253,7 @@ local servers = {
   -- rust_analyzer = {},
   -- tsserver = {},
 
+  --flutter-tools maybe set lsp here, that probably would work? idk
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -459,8 +457,7 @@ vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]], { desc = "[Y]ank to clipboard
 vim.keymap.set('n', '<leader>Y', [["+Y]], { desc = "[Y]ank to clipboard" })
 vim.keymap.set("x", "<leader>p", [["_dP"]], { desc = "[P]aste without overwriting register" })
 
--- we have oil now taking this binding
--- vim.keymap.set('n', '<C-q>', vim.cmd.Ex, { desc = "[Q]uit" })
+vim.keymap.set("n", "<C-q>", ":q<cr>", { desc = "[Q]uit" })
 vim.keymap.set('i', '<C-c>', '<Esc>')
 vim.keymap.set('n', 'n', "nzzzv", { desc = "[n]ext but centered" })
 vim.keymap.set('n', 'N', "Nzzzv", { desc = "[N]ext but centered" })
