@@ -31,6 +31,21 @@ return {
     end
   },
   'akinsho/bufferline.nvim',
+  {
+    'tzachar/highlight-undo.nvim',
+    config = function()
+      require('highlight-undo').setup({
+        keymaps = {
+          { 'n', 'u',     'undo', {} },
+          { 'n', '<C-r>', 'redo', {} },
+        },
+        duration = 300,
+        hlgroup = 'HighlightUndo'
+      })
+    end
+  },
+
+  'mrjones2014/smart-splits.nvim',
 
   --todo: it fucked up my - for oil
   -- {
