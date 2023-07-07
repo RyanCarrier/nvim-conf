@@ -1,4 +1,12 @@
 return {
+  {
+    'rcarriga/nvim-notify',
+    config = function()
+      vim.notify = require('notify')
+    end
+  },
+
+
   "ThePrimeagen/vim-be-good",
   "nvim-tree/nvim-web-devicons", -- optional dependency
   -- Git related plugins
@@ -61,7 +69,6 @@ return {
   --undo list
   'mbbill/undotree',
   'machakann/vim-sandwich',
-  'rcarriga/nvim-notify',
   -- zenmode
   'folke/zen-mode.nvim',
   {
@@ -70,6 +77,7 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
   {
+    -- floating status lines, this should be riced slightly but whatever
     'b0o/incline.nvim',
     config = function()
       require('incline').setup()
