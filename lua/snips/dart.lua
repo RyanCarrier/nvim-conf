@@ -146,6 +146,9 @@ ls.add_snippets("dart", {
 	s({ trig = "theme", name = "Theme of context" },
 		fmt("Theme.of(context).{}", i(1, "textTheme"))
 	),
+	s({ trig = "nav", name = "Navigator of context" },
+		fmt("Navigator.of(context).{};", i(1, "pop()"))
+	),
 	s({ trig = "copyw", name = "Generate copyWith" },
 		-- need to correct for List<X> cause it don't work lol
 		d(1, get_parameters_without_query, {})
@@ -217,6 +220,7 @@ class <> extends ConsumerWidget{
 			]], { i(1, "Widget"), rep(1) })
 	),
 
+	-- TODO: make the last position to be over placeholder, but also let placeholder be there
 	s({ trig = "csfw", name = "ConsumerStatefulWidget (riverpod)" },
 		fmta([[
 import 'package:flutter/widgets.dart';
