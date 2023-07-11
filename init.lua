@@ -252,6 +252,7 @@ local servers = {
   -- pyright = {},
   -- rust_analyzer = {},
   -- tsserver = {},
+  -- eslint = {},
 
   --flutter-tools maybe set lsp here, that probably would work? idk
   lua_ls = {
@@ -455,12 +456,20 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Centre screen after half jump"
 
 vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]], { desc = "[Y]ank to clipboard" })
 vim.keymap.set('n', '<leader>Y', [["+Y]], { desc = "[Y]ank to clipboard" })
-vim.keymap.set("x", "<leader>p", [["_dP"]], { desc = "[P]aste without overwriting register" })
+vim.keymap.set('v', "<leader>p", [["_dP]], { desc = "[P]aste without overwriting register" })
+-- TODO: we should make it so we can go <leader>p in 'n' and do select after (<leader>piw, to paste in word (or pib etc))
+
+vim.keymap.set('n', "<leader>iwp", [[viw"_dP]], { desc = "paste in word" })
+
+vim.keymap.set('n', "x", '"_x', { desc = "Delete without overwriting register", silent = true, noremap = true })
+vim.keymap.set('n', "X", '"_X', { desc = "Delete without overwriting register", silent = true, noremap = true })
 
 vim.keymap.set("n", "<C-q>", ":q<cr>", { desc = "[Q]uit" })
 vim.keymap.set('i', '<C-c>', '<Esc>')
 vim.keymap.set('n', 'n', "nzzzv", { desc = "[n]ext but centered" })
 vim.keymap.set('n', 'N', "Nzzzv", { desc = "[N]ext but centered" })
+
+vim.keymap.set("n", "<leader>xc", "<cmd>!chmod +x %<CR>", { silent = true, desc = 'chmod +x' })
 
 -- need to learn about cnext and lnext
 -- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
