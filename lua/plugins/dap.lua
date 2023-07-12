@@ -159,13 +159,14 @@ return {
     end
 
     -- toggle to see last session result. Without this ,you can't see session output in case of unhandled exception.
-    nmap("<F7>", dapui.toggle, "DapUI Toggle")
-    nmap("<F8>", dapui.close, "DapUI Close")
-    nmap("<F6>", function()
-      dapui.close()
-      dapui.open({ layout = 3 })
+    nmap("<F6>", trouggle, "Trouggle")
+    nmap("<F7>", function()
+      dapui.toggle({ layout = 1 })
     end, "Open default small")
-    nmap("<F9>", trouggle, "Trouggle")
+    nmap("<F8>", dapui.close, "DapUI Close")
+    nmap("<leader>es", dap.set_exception_breakpoints, "[e]xception [s]et breakpoints")
+    nmap("<leader>en", function() dap.set_exception_breakpoints({}) end, "[e]xception [n]o breakpoints")
+    nmap("<leader>eu", function() dap.set_exception_breakpoints({ 'uncaught' }) end, "[e]xception [u]nset breakpoints")
 
     -- dap.listeners.after.event_initialized['dapui_config'] = function() dapui.open({ layout = 3 }) end
     dap.listeners.after.event_initialized['dapui_config'] = trouggle

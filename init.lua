@@ -460,7 +460,7 @@ vim.keymap.set('v', "<leader>p", [["_dP]], { desc = "[P]aste without overwriting
 -- TODO: we should make it so we can go <leader>p in 'n' and do select after (<leader>piw, to paste in word (or pib etc))
 
 vim.keymap.set('n', "<leader>iwp", [[viw"_dP]], { desc = "paste in word" })
-
+vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]], { desc = "delete to void" })
 vim.keymap.set('n', "x", '"_x', { desc = "Delete without overwriting register", silent = true, noremap = true })
 vim.keymap.set('n', "X", '"_X', { desc = "Delete without overwriting register", silent = true, noremap = true })
 
