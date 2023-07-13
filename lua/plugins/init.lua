@@ -73,7 +73,6 @@ return {
   'folke/zen-mode.nvim',
   {
     'stevearc/oil.nvim',
-    opts = {},
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
   {

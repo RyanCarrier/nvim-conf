@@ -493,14 +493,10 @@ vim.keymap.set('n', '<A-l>', require('smart-splits').resize_right)
 -- vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
 -- vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
 -- swapping buffers between windows
-vim.keymap.set('n', '<leader><leader>h', require('smart-splits').swap_buf_left)
-vim.keymap.set('n', '<leader><leader>j', require('smart-splits').swap_buf_down)
-vim.keymap.set('n', '<leader><leader>k', require('smart-splits').swap_buf_up)
-vim.keymap.set('n', '<leader><leader>l', require('smart-splits').swap_buf_right)
-
-
-
-
+vim.keymap.set('n', '<leader><A-h>', require('smart-splits').swap_buf_left)
+vim.keymap.set('n', '<leader><A-j>', require('smart-splits').swap_buf_down)
+vim.keymap.set('n', '<leader><A-k>', require('smart-splits').swap_buf_up)
+vim.keymap.set('n', '<leader><A-l>', require('smart-splits').swap_buf_right)
 
 -- this might be cool
 vim.keymap.set("n", "<left>", "<C-w>h")
@@ -509,6 +505,11 @@ vim.keymap.set("n", "<up>", "<C-w>k")
 vim.keymap.set("n", "<right>", "<C-w>l")
 -- remap increment/decrement (just inc)
 vim.keymap.set("n", "<M-x>", "<C-a>")
+
+--TODO:
+--ok heres the deal, we always qa....q,
+--What about <C-a>....<C-a>🤯🤯🤯
+--then we go <A-a> to run
 
 if vim.g.neovide then
   -- scaling
